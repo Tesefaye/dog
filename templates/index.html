@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dog Breed Detection</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+    <h1>Dog Breed Detection</h1>
+    <form id="predictForm" enctype="multipart/form-data">
+        <label for="image_file">Upload Image:</label><br>
+        <input type="file" id="image_file" name="image_file"><br><br>
+        <label for="image_url">Or Enter Image URL:</label><br>
+        <input type="text" id="image_url" name="image_url"><br><br>
+        <input type="button" value="Detect Breed" onclick="predictBreed()">
+    </form>
+    <div id="predictionResult">
+		</div>
+
+    <script>
+        function predictBreed() {
+            var formData = new FormData($('#predictForm')[0]);
+            $.ajax({
+                type: 'POST',
+                url: '/predict',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+									  $('#predictionResult').html('<h2>Predicted Dog Breed: ' + response.predicted_breed + '</h2>');
+									  $('#image_file').val(''); // Clear the file input
+                    $('#image_url').val(''); // Clear the URL input
+                }
+            });
+        }
+    </script>
+</body>
+</html>
+
